@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NiveshRaksha – Portfolio Risk Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;font-size:16px;}
+body{font-family:'Source Sans 3',sans-serif;background:#f4f1eb;color:#1a1a1a;min-height:100vh;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:200;background:#1c2b3a;border-bottom:2px solid #c9a84c;}
+.nav-inner{max-width:1100px;margin:0 auto;padding:0 2rem;height:60px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:600;color:#c9a84c;letter-spacing:0.02em;text-decoration:none;}
+.logo span{color:#fff;font-weight:400;}
+.nav-links{display:flex;list-style:none;}
+.nav-links a{color:#b0bec5;text-decoration:none;font-size:0.8rem;font-weight:500;letter-spacing:0.05em;padding:0 0.9rem;line-height:60px;border-bottom:2px solid transparent;margin-bottom:-2px;transition:color 0.2s,border-color 0.2s;text-transform:uppercase;}
+.nav-links a:hover{color:#fff;}
+.nav-links a.active{color:#c9a84c;border-bottom-color:#c9a84c;}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;}
+.hamburger span{display:block;width:22px;height:2px;background:#b0bec5;border-radius:1px;}
+
+.hero-banner{background:#1c2b3a;padding:5rem 2rem 4rem;text-align:center;border-bottom:2px solid #c9a84c;margin-top:60px;}
+.section-tag{display:inline-block;border:1px solid #c9a84c;color:#c9a84c;font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.3rem 1rem;margin-bottom:1.5rem;}
+.hero-banner h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:600;color:#fff;line-height:1.2;margin-bottom:1rem;}
+.hero-banner h1 em{color:#c9a84c;font-style:italic;}
+.hero-banner p{color:#b0bec5;font-size:1rem;max-width:540px;margin:0 auto 2rem;line-height:1.7;font-weight:300;}
+.hero-cta{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+.btn-gold{background:#c9a84c;color:#1c2b3a;border:none;padding:0.7rem 1.8rem;font-family:'Source Sans 3',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;}
+.btn-gold:hover{background:#dfc070;}
+.btn-outline{background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.3);padding:0.7rem 1.8rem;font-family:'Source Sans 3',sans-serif;font-size:0.82rem;font-weight:500;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;transition:border-color 0.2s,color 0.2s;}
+.btn-outline:hover{border-color:#c9a84c;color:#c9a84c;}
+
+.stat-strip{background:#fff;border-bottom:1px solid #ddd;}
+.stat-strip-inner{max-width:1100px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:repeat(4,1fr);}
+.stat-item{text-align:center;padding:1.75rem 1rem;border-right:1px solid #ede9e0;}
+.stat-item:last-child{border-right:none;}
+.stat-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:600;color:#1c2b3a;}
+.stat-label{font-size:0.72rem;color:#6b7280;margin-top:0.3rem;line-height:1.4;}
+
+.page-section{padding:4rem 2rem;}
+.section-inner{max-width:1100px;margin:0 auto;}
+.section-header{margin-bottom:2rem;}
+.section-eyebrow{font-size:0.68rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#c9a84c;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.6rem;}
+.section-eyebrow::before{content:'';display:inline-block;width:18px;height:1px;background:#c9a84c;}
+.section-header h2{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,3vw,2.2rem);font-weight:500;color:#1c2b3a;line-height:1.25;}
+.section-header p{color:#4b5563;font-size:0.9rem;margin-top:0.4rem;max-width:580px;line-height:1.7;}
+
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:1.5rem;}
+.feature-card{background:#fff;border:1px solid #e0d9cc;padding:2rem;position:relative;}
+.feature-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:#c9a84c;}
+.feature-icon{width:40px;height:40px;background:#f4f1eb;border:1px solid #e0d9cc;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:1rem;}
+.feature-card h3{font-family:'Playfair Display',serif;font-size:1rem;font-weight:500;color:#1c2b3a;margin-bottom:0.4rem;}
+.feature-card p{font-size:0.82rem;color:#4b5563;line-height:1.6;}
+
+.section-alt{background:#fff;}
+
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;}
+.form-panel{background:#f4f1eb;border:1px solid #ddd9ce;padding:2rem;}
+.form-panel h3{font-family:'Playfair Display',serif;font-size:0.9rem;font-weight:500;color:#1c2b3a;margin-bottom:1.25rem;padding-bottom:0.75rem;border-bottom:1px solid #ddd9ce;text-transform:uppercase;letter-spacing:0.08em;}
+.form-group{margin-bottom:1rem;}
+label{display:block;font-size:0.74rem;font-weight:600;color:#374151;margin-bottom:0.4rem;text-transform:uppercase;letter-spacing:0.05em;}
+input[type="number"],select{width:100%;background:#fff;border:1px solid #ccc5b6;color:#1a1a1a;font-family:'Source Sans 3',sans-serif;font-size:0.88rem;padding:0.5rem 0.75rem;outline:none;transition:border-color 0.2s;appearance:none;border-radius:0;}
+input:focus,select:focus{border-color:#c9a84c;}
+input[type="range"]{width:100%;padding:0.25rem 0;cursor:pointer;accent-color:#c9a84c;background:none;border:none;outline:none;}
+.range-row{display:flex;justify-content:space-between;font-size:0.68rem;color:#6b7280;margin-top:0.15rem;}
+.inv-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;}
+
+.result-panel{background:#1c2b3a;padding:2rem;position:sticky;top:80px;}
+.result-placeholder{text-align:center;padding:3rem 1rem;color:#546e7a;}
+.ph-icon{font-size:2.5rem;margin-bottom:1rem;opacity:0.35;display:block;}
+.result-placeholder p{font-size:0.82rem;line-height:1.6;}
+.result-body{display:none;}
+.profile-badge{display:inline-flex;align-items:center;gap:0.4rem;padding:0.25rem 0.8rem;font-size:0.68rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.6rem;border:1px solid;}
+.score-num{font-family:'Playfair Display',serif;font-size:4rem;font-weight:600;color:#c9a84c;line-height:1;}
+.score-sub{font-size:0.72rem;color:#546e7a;margin-top:0.15rem;}
+.score-track{height:6px;background:rgba(255,255,255,0.08);margin:1.25rem 0 0.4rem;position:relative;}
+.score-fill{height:100%;background:linear-gradient(90deg,#4caf50,#ff9800,#ef5350);transition:width 1s ease;}
+.score-dot{position:absolute;top:-5px;width:16px;height:16px;background:#c9a84c;border-radius:50%;border:2px solid #1c2b3a;transition:left 1s ease;transform:translateX(-50%);}
+.track-labels{display:flex;justify-content:space-between;font-size:0.63rem;color:#546e7a;margin-bottom:1.25rem;}
+.result-desc{background:rgba(201,168,76,0.08);border-left:2px solid #c9a84c;padding:0.75rem 1rem;font-size:0.8rem;color:#b0bec5;line-height:1.6;margin-bottom:1.25rem;}
+.factor-table{width:100%;font-size:0.76rem;border-collapse:collapse;}
+.factor-table td{padding:0.45rem 0;border-bottom:1px solid rgba(255,255,255,0.06);color:#b0bec5;vertical-align:middle;}
+.factor-table td:first-child{color:#78909c;width:40%;}
+.factor-table tr:last-child td{border-bottom:none;}
+.ftag{font-size:0.6rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:0.15rem 0.45rem;border:1px solid;float:right;}
+.ftag-h{color:#ef5350;border-color:#ef5350;}
+.ftag-m{color:#ff9800;border-color:#ff9800;}
+.ftag-l{color:#66bb6a;border-color:#66bb6a;}
+.warn-box{background:#fff3f3;border:1px solid #f5c6c6;padding:0.6rem 0.8rem;font-size:0.78rem;color:#c62828;margin-top:0.5rem;display:none;}
+
+.alloc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;margin:1.5rem 0;}
+.alloc-item{background:#fff;border:1px solid #e0d9cc;padding:1rem;text-align:center;}
+.alloc-emoji{font-size:1.3rem;display:block;margin-bottom:0.35rem;}
+.alloc-item label{font-size:0.65rem;}
+.alloc-item input{text-align:center;font-weight:600;padding:0.4rem;margin-top:0.35rem;}
+
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1.5rem;}
+.chart-box{background:#fff;border:1px solid #e0d9cc;padding:1.5rem;}
+.chart-box h3{font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:#374151;margin-bottom:0.25rem;}
+.chart-sub{font-size:0.7rem;color:#6b7280;margin-bottom:1rem;}
+.chart-box canvas{max-height:200px;}
+
+.div-score-box{background:#fff;border:1px solid #e0d9cc;border-left:3px solid #c9a84c;padding:1.75rem;display:flex;align-items:center;gap:2rem;margin-top:1.5rem;flex-wrap:wrap;}
+.div-score-num{font-family:'Playfair Display',serif;font-size:3.5rem;font-weight:600;color:#1c2b3a;line-height:1;min-width:75px;}
+.div-score-info{flex:1;}
+.div-score-info p{font-size:0.85rem;color:#374151;line-height:1.6;}
+.div-advice{background:#f4f1eb;border:1px solid #ddd9ce;padding:0.6rem 0.9rem;font-size:0.78rem;color:#374151;margin-top:0.5rem;line-height:1.5;}
+
+.alert-list{display:flex;flex-direction:column;gap:0.75rem;margin-top:1.5rem;}
+.alert-card{display:flex;align-items:flex-start;gap:1.25rem;background:#fff;border:1px solid #e0d9cc;border-left:3px solid #ddd;padding:1.25rem;}
+.alert-card.high{border-left-color:#ef5350;}
+.alert-card.med{border-left-color:#ff9800;}
+.alert-card.low{border-left-color:#66bb6a;}
+.alert-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:6px;}
+.dot-h{background:#ef5350;}.dot-m{background:#ff9800;}.dot-l{background:#66bb6a;}
+.alert-body{flex:1;}
+.alert-title{font-size:0.88rem;font-weight:600;color:#1c2b3a;margin-bottom:0.3rem;}
+.alert-desc{font-size:0.78rem;color:#4b5563;line-height:1.55;}
+.sev-tag{font-size:0.6rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;padding:0.2rem 0.55rem;border:1px solid;flex-shrink:0;align-self:flex-start;white-space:nowrap;}
+.sev-h{color:#ef5350;border-color:#ef5350;}.sev-m{color:#ff9800;border-color:#ff9800;}.sev-l{color:#66bb6a;border-color:#66bb6a;}
+
+.dynamic-alert{background:#fff;border:1px solid #e0d9cc;border-top:3px solid #c9a84c;padding:1.5rem;margin-top:1.5rem;display:none;}
+.dynamic-alert h3{font-family:'Playfair Display',serif;font-size:1rem;font-weight:500;color:#1c2b3a;margin-bottom:0.75rem;}
+.dyn-item{font-size:0.8rem;color:#374151;padding:0.45rem 0;border-bottom:1px solid #f0ece4;line-height:1.5;}
+.dyn-item:last-child{border-bottom:none;}
+
+.tab-nav{display:flex;border-bottom:2px solid #ddd9ce;margin-bottom:1.5rem;flex-wrap:wrap;}
+.tab-btn{background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;font-family:'Source Sans 3',sans-serif;font-size:0.78rem;font-weight:600;color:#6b7280;letter-spacing:0.06em;text-transform:uppercase;padding:0.7rem 1rem;cursor:pointer;transition:color 0.2s,border-color 0.2s;}
+.tab-btn:hover{color:#1c2b3a;}
+.tab-btn.active{color:#1c2b3a;border-bottom-color:#c9a84c;}
+.tab-content{display:none;}
+.tab-content.active{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+.sug-card{background:#fff;border:1px solid #e0d9cc;padding:1.5rem;position:relative;}
+.sug-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:#c9a84c;}
+.sug-emoji{font-size:1.4rem;display:block;margin-bottom:0.7rem;}
+.sug-card h3{font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:500;color:#1c2b3a;margin-bottom:0.35rem;}
+.sug-card p{font-size:0.78rem;color:#4b5563;line-height:1.55;}
+.sug-tag{display:inline-block;margin-top:0.7rem;font-size:0.6rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:0.18rem 0.55rem;background:#f4f1eb;color:#6b7280;border:1px solid #ddd9ce;}
+
+footer{background:#111c26;border-top:2px solid #c9a84c;padding:2.5rem 2rem;text-align:center;}
+.footer-logo{font-family:'Playfair Display',serif;font-size:1.1rem;color:#c9a84c;margin-bottom:0.75rem;}
+.disclaimer-box{max-width:660px;margin:0 auto 1.25rem;background:rgba(201,168,76,0.05);border:1px solid rgba(201,168,76,0.2);padding:1rem 1.25rem;font-size:0.74rem;color:#78909c;line-height:1.65;}
+footer p{font-size:0.76rem;color:#546e7a;line-height:1.7;}
+
+.mobile-menu{display:none;position:fixed;inset:0;z-index:199;background:#1c2b3a;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{color:#fff;text-decoration:none;font-size:1.2rem;font-family:'Playfair Display',serif;}
+.mobile-menu a:hover{color:#c9a84c;}
+.mobile-close{position:absolute;top:1.25rem;right:1.5rem;background:none;border:1px solid rgba(255,255,255,0.2);color:#b0bec5;width:36px;height:36px;font-size:1rem;cursor:pointer;}
+
+.gold-rule{height:2px;background:#c9a84c;max-width:48px;margin:0 auto 2rem;}
+
+@media(max-width:768px){
+  .nav-links{display:none;}.hamburger{display:flex;}
+  .stat-strip-inner{grid-template-columns:1fr 1fr;}
+  .stat-item{border-bottom:1px solid #ede9e0;}
+  .stat-item:nth-child(2){border-right:none;}
+  .stat-item:last-child,.stat-item:nth-last-child(2){border-bottom:none;}
+  .feature-grid{grid-template-columns:1fr;}
+  .calc-grid{grid-template-columns:1fr;}
+  .inv-grid{grid-template-columns:1fr 1fr;}
+  .alloc-grid{grid-template-columns:repeat(2,1fr);}
+  .charts-row{grid-template-columns:1fr;}
+  .tab-content.active{grid-template-columns:1fr;}
+  .div-score-box{flex-direction:column;gap:1rem;}
+  .hero-cta{flex-direction:column;align-items:center;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="javascript:void(0)" onclick="goTo('home')" class="logo">Nivesh<span>Raksha</span></a>
+    <ul class="nav-links">
+      <li><a href="javascript:void(0)" onclick="goTo('home')" class="active" data-s="home">Overview</a></li>
+      <li><a href="javascript:void(0)" onclick="goTo('calculator')" data-s="calculator">Risk Calculator</a></li>
+      <li><a href="javascript:void(0)" onclick="goTo('analysis')" data-s="analysis">Portfolio Analysis</a></li>
+      <li><a href="javascript:void(0)" onclick="goTo('alerts')" data-s="alerts">Risk Alerts</a></li>
+      <li><a href="javascript:void(0)" onclick="goTo('suggestions')" data-s="suggestions">Suggestions</a></li>
+    </ul>
+    <button class="hamburger" onclick="openMenu()"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" onclick="closeMenu()">✕</button>
+  <a href="javascript:void(0)" onclick="goTo('home')">Overview</a>
+  <a href="javascript:void(0)" onclick="goTo('calculator')">Risk Calculator</a>
+  <a href="javascript:void(0)" onclick="goTo('analysis')">Portfolio Analysis</a>
+  <a href="javascript:void(0)" onclick="goTo('alerts')">Risk Alerts</a>
+  <a href="javascript:void(0)" onclick="goTo('suggestions')">Suggestions</a>
+</div>
+
+<!-- HOME -->
+<div id="home">
+  <div class="hero-banner">
+    <div class="section-tag">Portfolio Risk Management · India</div>
+    <h1>Understand and manage<br>your investment <em>risk</em></h1>
+    <p>A structured tool to assess your risk profile, analyse your portfolio, and receive evidence-based guidance — designed for Indian investors.</p>
+    <div class="hero-cta">
+      <button class="btn-gold" onclick="goTo('calculator')">Begin Risk Assessment</button>
+      <button class="btn-outline" onclick="goTo('analysis')">Analyse My Portfolio</button>
+    </div>
+  </div>
+
+  <div class="stat-strip">
+    <div class="stat-strip-inner">
+      <div class="stat-item"><div class="stat-num">₹7.4T</div><div class="stat-label">Lost to avoidable risk by retail investors (FY24)</div></div>
+      <div class="stat-item"><div class="stat-num">68%</div><div class="stat-label">Investors who have never formally assessed portfolio risk</div></div>
+      <div class="stat-item"><div class="stat-num">5 min</div><div class="stat-label">Time to receive your personalised risk score</div></div>
+      <div class="stat-item"><div class="stat-num">Free</div><div class="stat-label">No registration or hidden charges required</div></div>
+    </div>
+  </div>
+
+  <div class="page-section">
+    <div class="section-inner">
+      <div class="section-header" style="text-align:center">
+        <div class="section-eyebrow" style="justify-content:center">What This Tool Covers</div>
+        <h2>Four steps to a better-protected portfolio</h2>
+      </div>
+      <div class="gold-rule"></div>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3>Risk Score</h3>
+          <p>Answer questions about your age, income, investments, and goals. Receive a score from 0 to 100 with a detailed factor breakdown.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Portfolio Analysis</h3>
+          <p>Visualise your allocation across stocks, mutual funds, gold, FD, real estate, and crypto. Receive a diversification score instantly.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💡</div>
+          <h3>Strategies and Alerts</h3>
+          <p>Understand the most common risks facing Indian investors and receive practical, step-by-step strategies to reduce them.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CALCULATOR -->
+<div id="calculator" class="page-section section-alt">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-eyebrow">Step 1 of 4</div>
+      <h2>Risk Calculator</h2>
+      <p>Provide details about your finances and current investments. The tool will generate a personalised risk profile based on your inputs.</p>
+    </div>
+    <div class="calc-grid">
+      <div>
+        <div class="form-panel">
+          <h3>Personal Information</h3>
+          <div class="form-group">
+            <label>Your Age — <span id="ageDisplay" style="color:#c9a84c;font-weight:700">30 years</span></label>
+            <input type="range" id="ageSlider" min="18" max="70" value="30" oninput="updateAge(this.value)">
+            <div class="range-row"><span>18</span><span>70</span></div>
+          </div>
+          <div class="form-group">
+            <label>Monthly Income</label>
+            <select id="incomeSelect">
+              <option value="1">Below ₹25,000</option>
+              <option value="2" selected>₹25,000 – ₹75,000</option>
+              <option value="3">₹75,000 – ₹1,50,000</option>
+              <option value="4">₹1,50,000 – ₹5,00,000</option>
+              <option value="5">Above ₹5,00,000</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Investment Horizon</label>
+            <select id="horizonSelect">
+              <option value="1">Less than 1 year</option>
+              <option value="2">1 – 3 years</option>
+              <option value="3" selected>3 – 7 years</option>
+              <option value="4">7 – 15 years</option>
+              <option value="5">15+ years</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Primary Financial Goal</label>
+            <select id="goalSelect">
+              <option value="1">Capital Preservation</option>
+              <option value="2">Regular Income</option>
+              <option value="3" selected>Balanced Growth</option>
+              <option value="4">Wealth Creation</option>
+              <option value="5">Aggressive Growth</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Emergency Fund</label>
+            <select id="emergencySelect">
+              <option value="0">No emergency fund</option>
+              <option value="1">1 – 2 months' expenses</option>
+              <option value="2" selected>3 – 6 months' expenses</option>
+              <option value="3">6+ months' expenses</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-panel" style="margin-top:1rem;">
+          <h3>Investment Allocation (%)</h3>
+          <p style="font-size:0.76rem;color:#6b7280;margin-bottom:1rem;">Enter the approximate percentage of your total investments in each asset class. These should sum to 100%.</p>
+          <div class="inv-grid">
+            <div class="form-group"><label>📈 Stocks / Equity</label><input type="number" id="stockPct" min="0" max="100" value="40"></div>
+            <div class="form-group"><label>🏦 Mutual Funds</label><input type="number" id="mfPct" min="0" max="100" value="20"></div>
+            <div class="form-group"><label>🥇 Gold / Sov. Bonds</label><input type="number" id="goldPct" min="0" max="100" value="10"></div>
+            <div class="form-group"><label>🏛️ FD / PPF / Debt</label><input type="number" id="fdPct" min="0" max="100" value="20"></div>
+            <div class="form-group"><label>🏠 Real Estate / REITs</label><input type="number" id="rePct" min="0" max="100" value="5"></div>
+            <div class="form-group"><label>💎 Crypto / Others</label><input type="number" id="cryptoPct" min="0" max="100" value="5"></div>
+          </div>
+          <div class="warn-box" id="totalWarn">⚠ Percentages do not total 100%. Please adjust before calculating.</div>
+          <button class="btn-gold" style="width:100%;margin-top:1rem;" onclick="calculateRisk()">Calculate Risk Score →</button>
+        </div>
+      </div>
+      <div>
+        <div class="result-panel">
+          <div class="result-placeholder" id="rPlaceholder">
+            <span class="ph-icon">📋</span>
+            <p>Complete the form and click <strong style="color:#90a4ae">Calculate Risk Score</strong> to receive your personalised risk assessment.</p>
+          </div>
+          <div class="result-body" id="rBody">
+            <div style="font-size:0.67rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#546e7a;margin-bottom:0.5rem;">Your Risk Profile</div>
+            <div class="profile-badge" id="rBadge"></div>
+            <div class="score-num" id="rScore">—</div>
+            <div class="score-sub">out of 100</div>
+            <div class="score-track">
+              <div class="score-fill" id="sFill" style="width:0%"></div>
+              <div class="score-dot" id="sDot" style="left:0%"></div>
+            </div>
+            <div class="track-labels"><span>Conservative</span><span>Moderate</span><span>Aggressive</span></div>
+            <div class="result-desc" id="rDesc"></div>
+            <table class="factor-table" id="fTable"></table>
+            <button class="btn-gold" style="width:100%;margin-top:1.5rem;font-size:0.78rem;" onclick="goTo('suggestions')">View Recommendations →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PORTFOLIO ANALYSIS -->
+<div id="analysis" class="page-section">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-eyebrow">Step 2 of 4</div>
+      <h2>Portfolio Analysis</h2>
+      <p>Enter your current allocation across asset classes to visualise your portfolio and calculate your diversification score.</p>
+    </div>
+    <div class="alloc-grid">
+      <div class="alloc-item"><span class="alloc-emoji">📈</span><label>Equity / Stocks (%)</label><input type="number" id="aStocks" value="40" min="0" max="100" oninput="updateCharts()"></div>
+      <div class="alloc-item"><span class="alloc-emoji">🏦</span><label>Mutual Funds (%)</label><input type="number" id="aMF" value="25" min="0" max="100" oninput="updateCharts()"></div>
+      <div class="alloc-item"><span class="alloc-emoji">🥇</span><label>Gold (%)</label><input type="number" id="aGold" value="10" min="0" max="100" oninput="updateCharts()"></div>
+      <div class="alloc-item"><span class="alloc-emoji">🏛️</span><label>FD / Debt (%)</label><input type="number" id="aFD" value="15" min="0" max="100" oninput="updateCharts()"></div>
+      <div class="alloc-item"><span class="alloc-emoji">🏠</span><label>Real Estate (%)</label><input type="number" id="aRE" value="5" min="0" max="100" oninput="updateCharts()"></div>
+      <div class="alloc-item"><span class="alloc-emoji">💎</span><label>Crypto (%)</label><input type="number" id="aCrypto" value="3" min="0" max="100" oninput="updateCharts()"></div>
+      <div class="alloc-item"><span class="alloc-emoji">💵</span><label>Cash / Liquid (%)</label><input type="number" id="aCash" value="2" min="0" max="100" oninput="updateCharts()"></div>
+      <div class="alloc-item" style="background:#1c2b3a;border-color:#2d3f52;"><span class="alloc-emoji" style="font-size:1rem;margin-top:0.5rem;color:#c9a84c">Σ</span><label style="color:#78909c">Total</label><input type="number" id="aTotal" value="100" readonly style="background:#253545;color:#c9a84c;border-color:#2d3f52;font-weight:700;text-align:center;margin-top:0.35rem;"></div>
+    </div>
+    <div class="charts-row">
+      <div class="chart-box"><h3>Asset Allocation</h3><div class="chart-sub">Your current portfolio breakdown</div><canvas id="portfolioDonut"></canvas></div>
+      <div class="chart-box"><h3>Risk Contribution by Asset Class</h3><div class="chart-sub">Weighted risk each class contributes to the portfolio</div><canvas id="riskBar"></canvas></div>
+    </div>
+    <div class="div-score-box">
+      <div>
+        <div style="font-size:0.67rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#6b7280;margin-bottom:0.3rem;">Diversification Score</div>
+        <div class="div-score-num" id="divScoreNum">—</div>
+        <div style="font-size:0.7rem;color:#6b7280">/ 100</div>
+      </div>
+      <div class="div-score-info">
+        <p id="divScoreDesc"></p>
+        <div class="div-advice" id="divAdvice"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RISK ALERTS -->
+<div id="alerts" class="page-section section-alt">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-eyebrow">Step 3 of 4</div>
+      <h2>Risk Alerts</h2>
+      <p>Common risk scenarios facing Indian investors. Review each alert and assess whether it applies to your current portfolio.</p>
+    </div>
+    <div class="alert-list">
+      <div class="alert-card high">
+        <div class="alert-dot dot-h"></div>
+        <div class="alert-body">
+          <div class="alert-title">Over-concentration in a single stock or sector</div>
+          <div class="alert-desc">If more than 20% of your portfolio is in one company (e.g. Reliance, TCS, HDFC Bank), a single adverse quarter can cause substantial losses. Diversify across sectors and market-cap segments.</div>
+        </div>
+        <div class="sev-tag sev-h">High Risk</div>
+      </div>
+      <div class="alert-card high">
+        <div class="alert-dot dot-h"></div>
+        <div class="alert-body">
+          <div class="alert-title">Cryptocurrency exposure exceeding 5% of portfolio</div>
+          <div class="alert-desc">Crypto assets can decline 50–80% in bear markets and face ongoing regulatory uncertainty under Indian law. Limit crypto to a speculative allocation you can afford to lose entirely.</div>
+        </div>
+        <div class="sev-tag sev-h">High Risk</div>
+      </div>
+      <div class="alert-card med">
+        <div class="alert-dot dot-m"></div>
+        <div class="alert-body">
+          <div class="alert-title">No fixed income or debt instruments in portfolio</div>
+          <div class="alert-desc">An equity-only portfolio can fall 30–50% during a bear market. PPF, debt mutual funds, and FDs provide stability, liquidity, and reduce overall portfolio volatility.</div>
+        </div>
+        <div class="sev-tag sev-m">Moderate Risk</div>
+      </div>
+      <div class="alert-card med">
+        <div class="alert-dot dot-m"></div>
+        <div class="alert-body">
+          <div class="alert-title">Investing without an adequate emergency fund</div>
+          <div class="alert-desc">Investing all savings without a liquid reserve means a job loss or medical emergency could force you to liquidate investments at a loss. Maintain 3–6 months of expenses in a liquid account first.</div>
+        </div>
+        <div class="sev-tag sev-m">Moderate Risk</div>
+      </div>
+      <div class="alert-card med">
+        <div class="alert-dot dot-m"></div>
+        <div class="alert-body">
+          <div class="alert-title">Excessive allocation to small-cap or penny stocks</div>
+          <div class="alert-desc">Indian small-cap stocks carry high volatility and liquidity risk. Many BSE/NSE penny stocks are susceptible to price manipulation. Maintain small-cap exposure within 10–15% of your equity allocation.</div>
+        </div>
+        <div class="sev-tag sev-m">Moderate Risk</div>
+      </div>
+      <div class="alert-card low">
+        <div class="alert-dot dot-l"></div>
+        <div class="alert-body">
+          <div class="alert-title">Portfolio not reviewed or rebalanced annually</div>
+          <div class="alert-desc">Asset drift causes actual allocation to diverge from intended allocation over time. SEBI recommends reviewing and rebalancing at least once per financial year.</div>
+        </div>
+        <div class="sev-tag sev-l">Low Risk</div>
+      </div>
+      <div class="alert-card low">
+        <div class="alert-dot dot-l"></div>
+        <div class="alert-body">
+          <div class="alert-title">Currency risk in international or US-focused funds</div>
+          <div class="alert-desc">Funds tracking NASDAQ or other indices carry rupee depreciation risk in addition to standard market risk. Limit international exposure to 10–15% of your total portfolio.</div>
+        </div>
+        <div class="sev-tag sev-l">Low Risk</div>
+      </div>
+    </div>
+    <div class="dynamic-alert" id="dynAlert">
+      <h3>Personalised Alerts Based on Your Calculator Input</h3>
+      <div id="dynContent"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SUGGESTIONS -->
+<div id="suggestions" class="page-section">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-eyebrow">Step 4 of 4</div>
+      <h2>Risk Reduction Strategies</h2>
+      <p>Evidence-based approaches to reduce risk in your Indian investment portfolio — covering diversification, systematic investing, hedging, and rebalancing.</p>
+    </div>
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="showTab('diversification',this)">Diversification</button>
+      <button class="tab-btn" onclick="showTab('sip',this)">SIP Strategy</button>
+      <button class="tab-btn" onclick="showTab('hedging',this)">Hedging</button>
+      <button class="tab-btn" onclick="showTab('rebalancing',this)">Rebalancing</button>
+      <button class="tab-btn" onclick="showTab('tools',this)">Useful Tools</button>
+    </div>
+    <div id="tab-diversification" class="tab-content active">
+      <div class="sug-card"><span class="sug-emoji">🧺</span><h3>Spread Across Asset Classes</h3><p>Maintain holdings in stocks, mutual funds, gold, FD, and real estate. When one class declines, others cushion your overall portfolio.</p><span class="sug-tag">Core Principle</span></div>
+      <div class="sug-card"><span class="sug-emoji">🥇</span><h3>Allocate 10–15% to Gold</h3><p>Sovereign Gold Bonds (SGBs) offer 2.5% annual interest plus price appreciation. Gold typically rises when equity markets fall — a natural, time-tested hedge.</p><span class="sug-tag">Indian Favourite</span></div>
+      <div class="sug-card"><span class="sug-emoji">📊</span><h3>Use Nifty 50 / Sensex Index Funds</h3><p>Index funds spread your capital across 50 or 30 top Indian companies automatically. They are lower-cost and less risky than selecting individual stocks.</p><span class="sug-tag">Beginner Friendly</span></div>
+      <div class="sug-card"><span class="sug-emoji">🏛️</span><h3>Hold 20–30% in Debt Instruments</h3><p>PPF (tax-free, government-guaranteed), debt mutual funds, and FDs provide portfolio stability and cushion equity drawdowns during market corrections.</p><span class="sug-tag">Stability</span></div>
+      <div class="sug-card"><span class="sug-emoji">🌏</span><h3>Measured International Exposure</h3><p>US-focused funds (e.g. Motilal Oswal NASDAQ 100 ETF) offer geographic diversification. Limit to 10–15% to manage associated currency risk.</p><span class="sug-tag">Advanced</span></div>
+      <div class="sug-card"><span class="sug-emoji">🏢</span><h3>Consider REITs</h3><p>Listed REITs (Embassy REIT, Mindspace REIT) provide real estate exposure from approximately ₹300, with quarterly income distributions from rental revenues.</p><span class="sug-tag">Passive Income</span></div>
+    </div>
+    <div id="tab-sip" class="tab-content">
+      <div class="sug-card"><span class="sug-emoji">📅</span><h3>Invest via SIP</h3><p>A fixed monthly contribution via SIP (₹500–₹50,000) averages your purchase cost — you automatically acquire more units when markets are lower.</p><span class="sug-tag">Rupee Cost Averaging</span></div>
+      <div class="sug-card"><span class="sug-emoji">⏰</span><h3>Start Early, Stay Invested</h3><p>₹5,000/month from age 25 grows to approximately ₹1.7 crore by 55 at 12% CAGR. Starting at 35 yields roughly ₹50 lakh. Time is the most powerful variable.</p><span class="sug-tag">Compounding</span></div>
+      <div class="sug-card"><span class="sug-emoji">📈</span><h3>Increase SIP by 10% Annually</h3><p>Step-up SIPs that grow with your annual salary increment significantly increase long-term wealth without materially impacting monthly cash flow.</p><span class="sug-tag">Step-Up SIP</span></div>
+      <div class="sug-card"><span class="sug-emoji">🎯</span><h3>Goal-Based SIP Planning</h3><p>Create separate SIPs for each goal: house down payment (5 yr, debt fund), child's education (15 yr, equity fund), retirement (balanced/index fund).</p><span class="sug-tag">Goal Planning</span></div>
+    </div>
+    <div id="tab-hedging" class="tab-content">
+      <div class="sug-card"><span class="sug-emoji">🛡️</span><h3>Gold as an Inflation Hedge</h3><p>SGBs are the most efficient gold instrument in India — government-backed, interest-paying, and exempt from capital gains tax at maturity.</p><span class="sug-tag">Inflation Hedge</span></div>
+      <div class="sug-card"><span class="sug-emoji">💸</span><h3>Liquid Funds as a Cash Reserve</h3><p>Liquid mutual funds earn 6–7% annually (better than savings accounts) and can be redeemed within one business day. Ideal as an emergency fund vehicle.</p><span class="sug-tag">Liquidity Buffer</span></div>
+      <div class="sug-card"><span class="sug-emoji">🏛️</span><h3>PPF for Tax-Free Stability</h3><p>Public Provident Fund offers approximately 7.1% tax-free returns with full government guarantee — entirely immune to equity market volatility.</p><span class="sug-tag">Risk-Free</span></div>
+      <div class="sug-card"><span class="sug-emoji">⚠️</span><h3>Avoid Leveraged F&O Without Experience</h3><p>SEBI data shows over 90% of F&O traders incur net losses. Futures and Options can amplify losses substantially. Avoid until you have thorough knowledge of derivatives.</p><span class="sug-tag">Important Warning</span></div>
+    </div>
+    <div id="tab-rebalancing" class="tab-content">
+      <div class="sug-card"><span class="sug-emoji">⚖️</span><h3>Annual Portfolio Rebalancing</h3><p>If equities have grown from 60% to 75% of your portfolio, sell some equity and purchase debt or gold to restore your intended allocation. Review once or twice yearly.</p><span class="sug-tag">Discipline</span></div>
+      <div class="sug-card"><span class="sug-emoji">🎂</span><h3>Age-Based Allocation Guideline</h3><p>A widely used rule: equity % = 100 minus your age. At 30, hold 70% equity + 30% debt. At 50, hold 50% equity + 50% debt. Risk reduces as you approach your goals.</p><span class="sug-tag">Rule of Thumb</span></div>
+      <div class="sug-card"><span class="sug-emoji">🔄</span><h3>Tax-Efficient Rebalancing</h3><p>LTCG on equity above ₹1.25 lakh is taxed at 12.5%. Rebalance by directing new SIP contributions to underweight asset classes to minimise realised capital gains.</p><span class="sug-tag">Tax Efficient</span></div>
+      <div class="sug-card"><span class="sug-emoji">🔔</span><h3>Threshold-Triggered Rebalancing</h3><p>Set a rule to rebalance whenever any asset class deviates more than 10–15% from its target weight. This is more responsive to market conditions than calendar-based rebalancing.</p><span class="sug-tag">Proactive</span></div>
+    </div>
+    <div id="tab-tools" class="tab-content">
+      <div class="sug-card"><span class="sug-emoji">📱</span><h3>SEBI-Registered Direct MF Platforms</h3><p>Zerodha Coin, Groww, and Paytm Money offer direct mutual fund plans, which save 0.5–1.5% in annual commission fees compared to regular distribution plans.</p><span class="sug-tag">Official Platforms</span></div>
+      <div class="sug-card"><span class="sug-emoji">📊</span><h3>Value Research Online</h3><p>A free platform to research mutual funds, compare expense ratios, review star ratings, and analyse historical performance. Essential for Indian fund investors.</p><span class="sug-tag">Research Tool</span></div>
+      <div class="sug-card"><span class="sug-emoji">🏛️</span><h3>NSE / BSE Official Data</h3><p>Access real-time stock data, corporate announcements, and audited financial results at nseindia.com and bseindia.com before making investment decisions.</p><span class="sug-tag">Official Data</span></div>
+      <div class="sug-card"><span class="sug-emoji">🧮</span><h3>AMFI SIP Calculator</h3><p>Project your retirement corpus using the official AMFI SIP calculator. Model the combined impact of EPF + PPF + equity SIP for your specific retirement timeline.</p><span class="sug-tag">Planning Tool</span></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">NiveshRaksha</div>
+  <div class="disclaimer-box">
+    <strong>Disclaimer:</strong> NiveshRaksha is an educational resource only. The information provided does not constitute financial, investment, or legal advice. All investment decisions should be made in consultation with a SEBI-registered financial adviser. Past performance is not indicative of future results.
+  </div>
+  <p>Not affiliated with SEBI, BSE, NSE, AMFI, or any government body.</p>
+  <p style="margin-top:0.25rem;opacity:0.55;">© 2025 NiveshRaksha · For Educational Use Only · Designed for Indian Investors</p>
+</footer>
+
+<script>
+function openMenu(){document.getElementById('mobileMenu').classList.add('open');}
+function closeMenu(){document.getElementById('mobileMenu').classList.remove('open');}
+function goTo(id){
+  closeMenu();
+  const el=document.getElementById(id);
+  if(!el)return;
+  const top=el.getBoundingClientRect().top+window.pageYOffset-68;
+  window.scrollTo({top:Math.max(0,top),behavior:'smooth'});
+  // fallback for iframe environments
+  setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),50);
+}
+
+const sIds=['home','calculator','analysis','alerts','suggestions'];
+window.addEventListener('scroll',()=>{
+  let cur='home';
+  sIds.forEach(id=>{const el=document.getElementById(id);if(el&&window.scrollY>=el.offsetTop-80)cur=id;});
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.toggle('active',a.dataset.s===cur));
+},{passive:true});
+
+function updateAge(v){document.getElementById('ageDisplay').textContent=v+' years';}
+
+function calculateRisk(){
+  const age=+document.getElementById('ageSlider').value;
+  const horizon=+document.getElementById('horizonSelect').value;
+  const emergency=+document.getElementById('emergencySelect').value;
+  const stocks=+document.getElementById('stockPct').value||0;
+  const mf=+document.getElementById('mfPct').value||0;
+  const gold=+document.getElementById('goldPct').value||0;
+  const fd=+document.getElementById('fdPct').value||0;
+  const re=+document.getElementById('rePct').value||0;
+  const crypto=+document.getElementById('cryptoPct').value||0;
+  const total=stocks+mf+gold+fd+re+crypto;
+  const warn=document.getElementById('totalWarn');
+  if(Math.abs(total-100)>5&&total>0){warn.style.display='block';return;}
+  warn.style.display='none';
+
+  const ageS=age<30?15:age<40?30:age<50?50:age<60?65:80;
+  const eq=stocks+mf*0.6;
+  const eqS=eq>70?75:eq>50?55:eq>30?35:15;
+  const cS=crypto>15?85:crypto>8?65:crypto>3?35:0;
+  const emgS=emergency===0?30:emergency===1?18:emergency===2?5:0;
+  const hS=horizon===1?28:horizon===2?14:4;
+  let sc=Math.round(eqS*0.35+cS*0.15+emgS*0.15+ageS*0.25+hS*0.10);
+  sc=Math.min(Math.max(sc,4),95);
+
+  document.getElementById('rPlaceholder').style.display='none';
+  document.getElementById('rBody').style.display='block';
+  document.getElementById('rScore').textContent=sc;
+  setTimeout(()=>{
+    document.getElementById('sFill').style.width=sc+'%';
+    document.getElementById('sDot').style.left=sc+'%';
+  },50);
+
+  const badge=document.getElementById('rBadge');
+  let bSt,bTx,desc;
+  if(sc<33){
+    bSt='background:rgba(76,175,80,0.12);color:#388e3c;border-color:#388e3c;';
+    bTx='Conservative Profile';
+    desc='Your portfolio carries relatively low risk. You prioritise capital preservation over high returns — appropriate for investors near retirement or with short-term goals. Consider a modest equity allocation as a long-term inflation hedge.';
+  }else if(sc<66){
+    bSt='background:rgba(255,152,0,0.1);color:#d04a00;border-color:#ff9800;';
+    bTx='Moderate Profile';
+    desc='Your portfolio carries moderate risk — a balanced mix of growth and stability appropriate for most Indian investors aged 30–50. Review emergency fund adequacy and consider annual rebalancing.';
+  }else{
+    bSt='background:rgba(239,83,80,0.1);color:#b71c1c;border-color:#ef5350;';
+    bTx='Aggressive Profile';
+    desc='Your portfolio carries high risk. While this may generate higher long-term returns, significant short-term drawdowns are possible. Ensure you have a robust emergency fund and consider adding debt or gold instruments.';
+  }
+  badge.setAttribute('style',bSt);badge.textContent='● '+bTx;
+  document.getElementById('rDesc').textContent=desc;
+
+  const factors=[
+    {n:'Age Factor',v:ageS,l:age<35?'Young investor':age<50?'Mid-career':'Pre-retirement'},
+    {n:'Equity Exposure',v:eqS,l:Math.round(eq)+'% in equity'},
+    {n:'Crypto Holdings',v:cS,l:crypto+'% in crypto'},
+    {n:'Emergency Fund',v:30-emgS,l:['No fund ⚠','1–2 months','3–6 months ✓','6+ months ✓'][emergency]},
+    {n:'Time Horizon',v:30-hS,l:['< 1 year','1–3 years','3–7 years','7–15 years','15+ years'][horizon-1]},
+  ];
+  const ft=document.getElementById('fTable');
+  ft.innerHTML='<tr><td colspan="3" style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#546e7a;padding-bottom:0.5rem;">Contributing Factors</td></tr>';
+  factors.forEach(f=>{
+    const cls=f.v>60?'ftag-h':f.v>35?'ftag-m':'ftag-l';
+    const lbl=f.v>60?'High':f.v>35?'Moderate':'Low';
+    ft.innerHTML+=`<tr><td>${f.n}</td><td style="color:#90a4ae">${f.l}</td><td><span class="ftag ${cls}">${lbl}</span></td></tr>`;
+  });
+
+  const alerts=[];
+  if(crypto>10)alerts.push('Crypto allocation ('+crypto+'%) exceeds recommended maximum of 5%. Consider reducing this exposure.');
+  if(stocks>60)alerts.push('Direct equity at '+stocks+'% is highly concentrated. Consider diversifying into index funds or mutual funds.');
+  if(emergency===0)alerts.push('No emergency fund detected. This is the most critical financial safety net — establish one before increasing investment exposure.');
+  if(fd+gold<10&&sc>50)alerts.push('Safe assets (FD + Gold) below 10%. Adding 10–20% in debt instruments would meaningfully improve portfolio stability.');
+  if(horizon<=2&&eq>50)alerts.push('Short investment horizon (under 3 years) combined with high equity exposure is inadvisable. Consider shifting to liquid or short-term debt funds.');
+  const da=document.getElementById('dynAlert'),dc=document.getElementById('dynContent');
+  if(alerts.length){
+    da.style.display='block';
+    dc.innerHTML=alerts.map(a=>`<div class="dyn-item">→ ${a}</div>`).join('');
+  }else{da.style.display='none';}
+}
+
+let donutC,barC;
+const LABS=['Equity','Mutual Funds','Gold','FD / Debt','Real Estate','Crypto','Cash'];
+const COLS=['#1c5fa0','#3d8cb5','#c9a84c','#2e7d5e','#6d4fa0','#b03a3a','#6b7280'];
+const RW=[8,5,2,1,2,12,0.1];
+
+function getVals(){
+  return[
+    +document.getElementById('aStocks').value||0,
+    +document.getElementById('aMF').value||0,
+    +document.getElementById('aGold').value||0,
+    +document.getElementById('aFD').value||0,
+    +document.getElementById('aRE').value||0,
+    +document.getElementById('aCrypto').value||0,
+    +document.getElementById('aCash').value||0,
+  ];
+}
+
+function initCharts(){
+  const v=getVals();
+  donutC=new Chart(document.getElementById('portfolioDonut').getContext('2d'),{
+    type:'doughnut',
+    data:{labels:LABS,datasets:[{data:v,backgroundColor:COLS,borderWidth:2,borderColor:'#fff',hoverOffset:5}]},
+    options:{cutout:'60%',plugins:{legend:{position:'bottom',labels:{color:'#374151',font:{size:10,family:'Source Sans 3'},padding:8}},tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed}%`}}}}
+  });
+  barC=new Chart(document.getElementById('riskBar').getContext('2d'),{
+    type:'bar',
+    data:{labels:LABS,datasets:[{label:'Risk contribution',data:v.map((x,i)=>+((x*RW[i])/100).toFixed(2)),backgroundColor:COLS,borderRadius:2,borderWidth:0}]},
+    options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(0,0,0,0.05)'},ticks:{color:'#6b7280',font:{size:10}}},y:{grid:{display:false},ticks:{color:'#374151',font:{size:10,family:'Source Sans 3'}}}}}
+  });
+}
+
+function updateCharts(){
+  const v=getVals();
+  document.getElementById('aTotal').value=v.reduce((a,b)=>a+b,0);
+  if(donutC){donutC.data.datasets[0].data=v;donutC.update();}
+  if(barC){barC.data.datasets[0].data=v.map((x,i)=>+((x*RW[i])/100).toFixed(2));barC.update();}
+  const nz=v.filter(x=>x>0).length,mx=Math.max(...v);
+  let ds=Math.min(nz*12,60);
+  if(mx<30)ds+=20;else if(mx<50)ds+=10;
+  if(v[2]>=5)ds+=10;if(v[3]+v[6]>=10)ds+=10;
+  ds=Math.min(ds,100);
+  const dn=document.getElementById('divScoreNum');
+  dn.textContent=ds;
+  dn.style.color=ds>=70?'#2e7d32':ds>=45?'#d04a00':'#b71c1c';
+  let dd,da;
+  if(ds>=70){dd='Strong diversification across multiple asset classes. Your portfolio is well-positioned to absorb sector-specific or market-wide shocks.';da='Recommendation: Maintain this allocation and rebalance annually to preserve these ratios.';}
+  else if(ds>=45){dd='Moderate diversification. Some spread exists, but concentration in certain asset classes may amplify risk during downturns.';da='Recommendation: Increase allocation to underweight classes such as gold and debt to improve your score.';}
+  else{dd='Low diversification. Heavy concentration in one or two asset classes significantly amplifies portfolio risk.';da='Action Required: Distribute across at least 4–5 asset classes including equity, debt, gold, and liquid instruments.';}
+  document.getElementById('divScoreDesc').textContent=dd;
+  document.getElementById('divAdvice').textContent=da;
+}
+
+function showTab(id,btn){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+window.addEventListener('DOMContentLoaded',()=>{initCharts();updateCharts();});
+</script>
+</body>
+</html>
